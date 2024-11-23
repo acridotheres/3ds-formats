@@ -1,0 +1,7 @@
+[package]
+name = "acridotheres-3ds"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dh = "0.8.0"
