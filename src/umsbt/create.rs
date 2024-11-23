@@ -7,7 +7,7 @@ pub fn create<'a>(
     target: &mut dyn Writable<'a>,
     buffer_size: u64,
 ) -> Result<()> {
-    let body_offset = files.len() * 8;
+    let body_offset = files.len() * 8 + 8;
     target.write_bytes(vec![0; body_offset].as_slice())?;
 
     files.sort_by(|a, b| a.metadata.path.cmp(&b.metadata.path));
