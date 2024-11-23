@@ -2,6 +2,9 @@
 name = "acridotheres-3ds"
 version = "0.1.0"
 edition = "2021"
+description = "Nintendo 3DS-specific file formats for Acridotheres"
+license = "MIT"
+repository = "https://github.com/acridotheres/3ds-formats"
 
 [dependencies]
 dh = "0.8.0"
