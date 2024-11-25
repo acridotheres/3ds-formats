@@ -1,4 +1,4 @@
-use super::MsbtFileSource;
+use super::{hashtables::padding_len, MsbtFileSource};
 use dh::{recommended::*, Readable, Writable};
 use std::io::Result;
 
@@ -58,7 +58,7 @@ pub fn create<'a>(
     let pos = target.pos()?;
     let labels_size = pos - table_pos;
     target.write_u32le_at(labels_size_pos, labels_size as u32)?;
-    target.write_bytes(&vec![0xab; 16 - pos as usize % 16])?;
+    target.write_bytes(&vec![0xab; padding_len(pos) as usize])?;
 
     // attributes section
     if has_attr_section {
@@ -137,6 +137,6 @@ pub fn create<'a>(
     let pos = target.pos()?;
     let text_size = pos - table_pos;
     target.write_u32le_at(text_size_pos, text_size as u32)?;
-    target.write_bytes(&vec![0xab; 16 - pos as usize % 16])?;
+    target.write_bytes(&vec![0xab; padding_len(pos) as usize])?;
     Ok(())
 }
