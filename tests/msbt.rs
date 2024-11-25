@@ -38,6 +38,18 @@ fn msbt_secretary() {
 }
 
 #[test]
+fn msbt_an_3p_fu() {
+    let mut reader = dh::file::open_r("tests/samples/AN_3P_Fu.msbt").unwrap();
+    let metadata = msbt::metadata(&mut reader).unwrap();
+    assert_eq!(metadata.files.len(), 56);
+
+    let mut target = dh::data::write_empty();
+    msbt::extract(&mut reader, &mut target, &metadata.files[31]).unwrap();
+    let string = String::from_utf8(dh::data::close(target)).unwrap();
+    assert!(string.starts_with("<{0003,0016,}>Oh!<{0007,0000,14000000}> That might work!"));
+}
+
+#[test]
 fn custom_msbt() {
     let mut file0 = dh::data::read_ref(b"Hello, world!");
     let mut file1 = dh::data::read_ref(b"Hello, world! 2");

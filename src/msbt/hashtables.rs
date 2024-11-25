@@ -1,6 +1,15 @@
 use dh::{recommended::*, Readable};
 use std::{collections::HashMap, io::Result};
 
+pub fn padding_len(pos: u64) -> u64 {
+    let res = pos % 16;
+    if res == 0 {
+        0
+    } else {
+        16 - res
+    }
+}
+
 // https://zeldamods.org/wiki/Msbt#Labels_Section
 pub fn parse_label_block(
     reader: &mut dyn Readable,
@@ -33,7 +42,7 @@ pub fn parse_label_block(
 
     reader.to(table_start + size as u64)?;
     let pos = reader.pos()?;
-    reader.jump(16 - pos as i64 % 16)?;
+    reader.jump(padding_len(pos) as i64)?;
 
     Ok(labels)
 }
@@ -45,7 +54,7 @@ pub fn parse_attr_block(reader: &mut dyn Readable, big_endian: bool) -> Result<(
     let start = reader.pos()?;
     reader.jump(size as i64)?;
     let pos = reader.pos()?;
-    reader.jump(16 - pos as i64 % 16)?;
+    reader.jump(padding_len(pos) as i64)?;
 
     Ok((start, size as u64))
 }
